@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'tutorial.pagination.StandardResultsSetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'tutorial.pagination.CustomPagination',
     'PAGE_SIZE': 50,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
