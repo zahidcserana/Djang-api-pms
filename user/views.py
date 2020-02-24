@@ -1,6 +1,6 @@
 from .models import User
 from .serializers import UserSerializer
-from rest_framework import viewsets, request, status
+from rest_framework import viewsets, request, status, filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.views import APIView
@@ -17,8 +17,9 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['name', 'email', 'mobile', 'status', 'type']
+    filter_backends = [filters.OrderingFilter]
+    filterset_fields = ['id','name', 'email', 'mobile', 'status', 'type']
+    ordering_fields = ['id','name']
 
     def create(self, request):
         data = request.data
