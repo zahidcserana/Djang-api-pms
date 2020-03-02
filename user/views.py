@@ -17,9 +17,10 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_backends = [filters.OrderingFilter]
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
     filterset_fields = ['id','name', 'email', 'mobile', 'status', 'type']
     ordering_fields = ['id','name']
+    ordering = ('-id')
 
     def create(self, request):
         data = request.data
