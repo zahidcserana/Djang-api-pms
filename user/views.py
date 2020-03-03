@@ -20,7 +20,7 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
     filterset_fields = ['id','name', 'email', 'mobile', 'status', 'type']
     ordering_fields = ['id','name']
-    ordering = ('-id')
+    # ordering = ('-id')
 
     def create(self, request):
         data = request.data

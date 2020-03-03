@@ -30,7 +30,7 @@ class User(models.Model):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     mobile = models.CharField(max_length=255)
-
+    timestamp = models.DateTimeField(auto_now=True)
     def is_upperclass(self):
         return self.status in {self.ACTIVE, self.INACTIVE}
 
