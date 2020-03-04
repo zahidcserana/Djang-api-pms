@@ -31,6 +31,12 @@ class User(models.Model):
     email = models.CharField(max_length=255)
     mobile = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now=True)
+    department = models.ForeignKey(
+        'Department',
+        related_name='departments',
+        on_delete=models.CASCADE,
+    )
+
     def is_upperclass(self):
         return self.status in {self.ACTIVE, self.INACTIVE}
 
