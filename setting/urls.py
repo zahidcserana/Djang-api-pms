@@ -7,8 +7,8 @@ app_name = "setting"
 
 router = routers.DefaultRouter()
 router.register(r'departments', DepartmentViewSet, basename='department')
-# urlpatterns = router.urls
+urlpatterns = router.urls
 
-urlpatterns = [
-    path('users/info/', UserInfo.as_view(), name='info'),
-]
+# urlpatterns = [
+#     path('users/info/', UserInfo.as_view(), name='info'),
+# ]

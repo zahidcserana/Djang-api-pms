@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from tutorial.quickstart import views
+from setting.views import UserInfo
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -33,4 +34,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include('setting.urls')),
     path('api/', include('user.urls')),
+    path('users/token/info/', UserInfo.as_view(), name='info'),
 ]
