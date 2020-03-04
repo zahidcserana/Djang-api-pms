@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 
+
 # {"code":20000,"data":{"status":"success"}}
 
 
@@ -18,8 +19,9 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filterset_fields = ['id','name', 'email', 'mobile', 'status', 'type']
-    ordering_fields = ['id','name']
+    filterset_fields = ['id', 'name', 'email', 'mobile', 'status', 'type']
+    ordering_fields = ['id', 'name']
+
     # ordering = ('-id')
 
     def create(self, request):
@@ -60,7 +62,6 @@ class HelloView(APIView):
     def get(self, request):
         content = {'message': 'Hello, World!'}
         return Response(content)
-
 
 # class UserInfo(APIView):
 

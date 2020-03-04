@@ -1,5 +1,6 @@
 from django.db import models
 from enum import Enum
+from setting.models import Department
 
 
 class User(models.Model):
@@ -32,9 +33,10 @@ class User(models.Model):
     mobile = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now=True)
     department = models.ForeignKey(
-        'Department',
+        'setting.Department',
         related_name='departments',
         on_delete=models.CASCADE,
+        null=True
     )
 
     def is_upperclass(self):
