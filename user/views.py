@@ -24,6 +24,15 @@ class UserViewSet(viewsets.ModelViewSet):
     filterset_fields = ['id', 'name', 'email', 'mobile', 'status', 'type']
     ordering_fields = ['id', 'name']
 
+    def get_queryset(self):
+        queryset = User.objects.all()
+        status = self.request.query_params.get('status')
+
+        if not status:
+            queryset = queryset.exclude(status="DELETE")
+
+        return queryset
+
     # ordering = ('-id')
 
     def create(self, request):
