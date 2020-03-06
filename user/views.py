@@ -1,4 +1,5 @@
 from .models import User
+from setting.models import Department
 from .serializers import UserSerializer
 from rest_framework import viewsets, request, status, filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -7,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
+from django.http import HttpResponse
 
 
 # {"code":20000,"data":{"status":"success"}}
@@ -35,6 +37,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None):
         saved_user = get_object_or_404(User.objects.all(), pk=pk)
         data = request.data
+        # department_id = request.data.get('department_id')
+        # department = get_object_or_404(Department.objects.all(), pk=department_id)
+        # return HttpResponse(str(department))
         serializer = UserSerializer(
             instance=saved_user, data=data, partial=True)
         if serializer.is_valid(raise_exception=True):

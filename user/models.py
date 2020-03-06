@@ -35,8 +35,7 @@ class User(models.Model):
     department = models.ForeignKey(
         'setting.Department',
         related_name='departments',
-        on_delete=models.CASCADE,
-        null=True
+        on_delete=models.CASCADE
     )
 
     def is_upperclass(self):
