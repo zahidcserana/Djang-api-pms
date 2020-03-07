@@ -34,5 +34,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include('setting.urls')),
     path('api/', include('user.urls')),
+    path('api/', include('patient.urls')),
     path('users/token/info/', UserInfo.as_view(), name='info'),
 ]
