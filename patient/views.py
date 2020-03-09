@@ -19,11 +19,16 @@ class PatientViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Patient.objects.all()
         status = self.request.query_params.get('status')
-
         if not status:
             queryset = queryset.exclude(status="DELETE")
-
         return queryset
+
+    def retrieve(self, request, pk=None):
+        queryset = Patient.objects.all()
+        patient = get_object_or_404(queryset, pk=pk)
+        serializer = PatientSerializer(patient)
+        content = {"code": 20000, "data": serializer.data}
+        return Response(content)
 
     def create(self, request):
         data = request.data
