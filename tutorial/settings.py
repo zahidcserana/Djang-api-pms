@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'tutorial',
     'user',
     'patient',
+    'appointment',
     'setting'
 ]
 

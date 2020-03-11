@@ -30,6 +30,7 @@ class Patient(models.Model):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     mobile = models.CharField(max_length=255)
+    address = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,3 +39,5 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.name
+
+
