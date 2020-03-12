@@ -23,13 +23,11 @@ class AppointmentSerial(models.Model):
         choices=Status,
         default=ACTIVE,
     )
+    name = models.CharField(max_length=255)
+    mobile = models.CharField(max_length=255)
     schedule_time = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    patient = models.ForeignKey(
-        'patient.Patient',
-        on_delete=models.CASCADE
-    )
 
     def is_upperclass(self):
         return self.status in {self.ACTIVE, self.INACTIVE}

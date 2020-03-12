@@ -4,12 +4,10 @@ from patient.serializers import PatientSerializer
 
 
 class AppointmentSerialSerializer(serializers.HyperlinkedModelSerializer):
-    patient = PatientSerializer(read_only=True)
-    patient_id = serializers.IntegerField()
 
     class Meta:
         model = AppointmentSerial
-        fields = ['id', 'schedule_time', 'patient', 'patient_id', 'status', 'created_at']
+        fields = ['id', 'schedule_time', 'name', 'mobile', 'status', 'created_at']
 
 
 class DoctorAppointmentSerializer(serializers.HyperlinkedModelSerializer):
