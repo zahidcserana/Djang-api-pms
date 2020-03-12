@@ -5,18 +5,12 @@ from patient.models import Patient
 
 class AppointmentSerial(models.Model):
     ACTIVE = 'ACTIVE'
-    HOLD = 'HOLD'
     CANCEL = 'CANCEL'
-    REJECT = 'REJECT'
-    COMPLETE = 'COMPLETE'
-    DELETE = 'DELETE'
+    ATTEND = 'ATTEND'
     Status = [
         (ACTIVE, 'Active'),
-        (HOLD, 'Hold'),
         (CANCEL, 'Cancel'),
-        (REJECT, 'Reject'),
-        (COMPLETE, 'Complete'),
-        (DELETE, 'Delete'),
+        (ATTEND, 'Attend'),
     ]
     status = models.CharField(
         max_length=10,
