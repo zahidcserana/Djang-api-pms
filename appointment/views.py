@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from .models import AppointmentSerial
 from patient.models import Patient
 from .serializers import AppointmentSerialSerializer
@@ -7,6 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
+import datetime
 
 
 class AppointmentSerialViewSet(viewsets.ModelViewSet):
@@ -22,10 +25,13 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = AppointmentSerial.objects.all()
         status = self.request.query_params.get('status')
+        schedule_time = self.request.query_params.get('schedule_time')
 
         if not status:
             queryset = queryset.exclude(status="DELETE")
 
+        # if schedule_time:
+        #     queryset = queryset.filter(schedule_time_date=datetime.date(schedule_time))
         return queryset
 
     def create(self, request):
