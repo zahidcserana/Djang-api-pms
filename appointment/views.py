@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.utils import timezone
 
 from .models import AppointmentSerial
@@ -10,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 import datetime
+import dateutil.parser
 
 
 class AppointmentSerialViewSet(viewsets.ModelViewSet):
@@ -30,8 +32,16 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
         if not status:
             queryset = queryset.exclude(status="DELETE")
 
-        # if schedule_time:
-        #     queryset = queryset.filter(schedule_time_date=datetime.date(schedule_time))
+        if schedule_time:
+            d = dateutil.parser.isoparse(schedule_time)
+            dateTime = d.strftime('%Y-%m-%d %H:%M:%S')
+            date = datetime.datetime.strptime(dateTime, "%Y-%m-%d  %H:%M:%S").strftime("%Y,%m,%d")
+            time = datetime.datetime.strptime(dateTime, "%Y-%m-%d  %H:%M:%S").strftime("%H:%M:%S")
+            print(date)
+            if time == '00:00:00':
+                queryset = queryset.filter(schedule_time__date=datetime.date(date))
+            else:
+                queryset = queryset.filter(schedule_time=schedule_time)
         return queryset
 
     def create(self, request):
