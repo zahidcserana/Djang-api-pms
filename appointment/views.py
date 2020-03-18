@@ -30,8 +30,8 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
         if not status:
             queryset = queryset.exclude(status="DELETE")
 
-        # if schedule_time:
-        #     queryset = queryset.filter(schedule_time_date=datetime.date(schedule_time))
+        if schedule_time:
+            queryset = queryset.filter(schedule_time_date=datetime.date(schedule_time))
         return queryset
 
     def create(self, request):
