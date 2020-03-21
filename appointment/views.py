@@ -32,16 +32,17 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
         if not status:
             queryset = queryset.exclude(status="DELETE")
 
-        if schedule_time:
-            d = dateutil.parser.isoparse(schedule_time)
-            dateTime = d.strftime('%Y-%m-%d %H:%M:%S')
-            date = datetime.datetime.strptime(dateTime, "%Y-%m-%d  %H:%M:%S").strftime("%Y,%m,%d")
-            time = datetime.datetime.strptime(dateTime, "%Y-%m-%d  %H:%M:%S").strftime("%H:%M:%S")
-            print(date)
-            if time == '00:00:00':
-                queryset = queryset.filter(schedule_time__date=datetime.date(date))
-            else:
-                queryset = queryset.filter(schedule_time=schedule_time)
+        # if schedule_time:
+        #     d = dateutil.parser.isoparse(schedule_time)
+        #     dateTime = d.strftime('%Y-%m-%d %H:%M:%S')
+        #     date = datetime.datetime.strptime(dateTime, "%Y-%m-%d  %H:%M:%S").strftime("%Y,%-m,%d")
+        #     time = datetime.datetime.strptime(dateTime, "%Y-%m-%d  %H:%M:%S").strftime("%H:%M:%S")
+        #     print(d.year, d.month, d.day)
+        #     queryset = queryset.filter(schedule_time__date=datetime.date(d.year, d.month, d.day))
+            # if time == '00:00:00':
+            #     queryset = queryset.filter(schedule_time__date=datetime.date(2020,3,25))
+            # else:
+            #     queryset = queryset.filter(schedule_time__contains=date)
         return queryset
 
     def create(self, request):
