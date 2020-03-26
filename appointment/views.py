@@ -21,7 +21,7 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
     queryset = AppointmentSerial.objects.all()
     serializer_class = AppointmentSerialSerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filterset_fields = ['id', 'name', 'mobile', 'schedule_time', 'created_at', 'status']
+    filterset_fields = ['id', 'name', 'mobile', 'schedule_time', 'doctor_id', 'created_at', 'status']
     ordering_fields = ['id', 'schedule_time']
 
     def get_queryset(self):

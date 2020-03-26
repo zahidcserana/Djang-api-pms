@@ -1,13 +1,15 @@
 from .models import AppointmentSerial, DoctorAppointment
 from rest_framework import serializers
 from patient.serializers import PatientSerializer
+from doctor.serializers import DoctorSerializer
 
 
 class AppointmentSerialSerializer(serializers.HyperlinkedModelSerializer):
-
+    doctor = DoctorSerializer(read_only=True)
+    doctor_id = serializers.IntegerField()
     class Meta:
         model = AppointmentSerial
-        fields = ['id', 'schedule_time', 'name', 'mobile', 'status', 'created_at']
+        fields = ['id', 'schedule_time', 'name', 'mobile', 'doctor', 'doctor_id', 'status', 'created_at']
 
 
 class DoctorAppointmentSerializer(serializers.HyperlinkedModelSerializer):

@@ -1,6 +1,7 @@
 from django.db import models
 from enum import Enum
 from patient.models import Patient
+from doctor.models import Doctor
 
 
 class AppointmentSerial(models.Model):
@@ -22,6 +23,11 @@ class AppointmentSerial(models.Model):
     schedule_time = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    doctor = models.ForeignKey(
+        'doctor.Doctor',
+        null=True,
+        on_delete=models.CASCADE
+    )
 
     def is_upperclass(self):
         return self.status in {self.ACTIVE, self.INACTIVE}

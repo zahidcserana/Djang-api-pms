@@ -36,5 +36,6 @@ urlpatterns = [
     path('api/', include('user.urls')),
     path('api/', include('patient.urls')),
     path('api/', include('appointment.urls')),
+    path('api/', include('doctor.urls')),
     path('users/token/info/', UserInfo.as_view(), name='info'),
 ]
