@@ -37,8 +37,10 @@ class AppointmentSerial(models.Model):
 
 
 class DoctorAppointment(models.Model):
-    doc_image = models.TextField()
-    doc_file = models.TextField()
+    name = models.CharField(max_length=255, null=True)
+    mobile = models.CharField(max_length=255, null=True)
+    doc_image = models.FileField()
+    doc_file = models.FileField()
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -46,6 +48,10 @@ class DoctorAppointment(models.Model):
         'patient.Patient',
         on_delete=models.CASCADE
     )
-
+    doctor = models.ForeignKey(
+        'doctor.Doctor',
+        null=True,
+        on_delete=models.CASCADE
+    )
     def __str__(self):
         return self.name

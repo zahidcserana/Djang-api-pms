@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.utils import timezone
+from rest_framework.parsers import FileUploadParser
 
-from .models import AppointmentSerial
+from .models import AppointmentSerial, DoctorAppointment
 from patient.models import Patient
-from .serializers import AppointmentSerialSerializer
+from .serializers import AppointmentSerialSerializer, DoctorAppointmentSerializer
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -39,10 +40,10 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
         #     time = datetime.datetime.strptime(dateTime, "%Y-%m-%d  %H:%M:%S").strftime("%H:%M:%S")
         #     print(d.year, d.month, d.day)
         #     queryset = queryset.filter(schedule_time__date=datetime.date(d.year, d.month, d.day))
-            # if time == '00:00:00':
-            #     queryset = queryset.filter(schedule_time__date=datetime.date(2020,3,25))
-            # else:
-            #     queryset = queryset.filter(schedule_time__contains=date)
+        # if time == '00:00:00':
+        #     queryset = queryset.filter(schedule_time__date=datetime.date(2020,3,25))
+        # else:
+        #     queryset = queryset.filter(schedule_time__contains=date)
         return queryset
 
     def create(self, request):
@@ -60,6 +61,40 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
         # department = get_object_or_404(Department.objects.all(), pk=department_id)
         # return HttpResponse(str(department))
         serializer = AppointmentSerialSerializer(
+            instance=saved_user, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            user_saved = serializer.save()
+            content = {"code": 20000, "data": {"status": "success"}}
+        return Response(content)
+
+
+class AppointmentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = DoctorAppointment.objects.all()
+    serializer_class = DoctorAppointmentSerializer
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+    filterset_fields = ['id', 'name', 'mobile', 'description', 'doctor_id', 'patient_id', 'created_at']
+    ordering_fields = ['id']
+
+    def create(self, request):
+        parser_classes = [FileUploadParser]
+        data = request.data
+        # return HttpResponse(str(data))
+        serializer = DoctorAppointmentSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            user_saved = serializer.save()
+            content = {"code": 20000, "data": {"status": "success"}}
+        return Response(content)
+
+    def update(self, request, pk=None):
+        saved_user = get_object_or_404(DoctorAppointment.objects.all(), pk=pk)
+        data = request.data
+        # department_id = request.data.get('department_id')
+        # department = get_object_or_404(Department.objects.all(), pk=department_id)
+        # return HttpResponse(str(department))
+        serializer = DoctorAppointmentSerializer(
             instance=saved_user, data=data, partial=True)
         if serializer.is_valid(raise_exception=True):
             user_saved = serializer.save()
