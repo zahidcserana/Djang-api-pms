@@ -88,12 +88,16 @@ class AppointmentViewSet(viewsets.ModelViewSet):
             content = {"code": 20000, "data": {"status": "success"}}
         return Response(content)
 
+    def retrieve(self, request, pk=None):
+        queryset = DoctorAppointment.objects.all()
+        modelData = get_object_or_404(queryset, pk=pk)
+        serializer = DoctorAppointmentSerializer(modelData)
+        content = {"code": 20000, "data": serializer.data}
+        return Response(content)
+
     def update(self, request, pk=None):
         saved_user = get_object_or_404(DoctorAppointment.objects.all(), pk=pk)
         data = request.data
-        # department_id = request.data.get('department_id')
-        # department = get_object_or_404(Department.objects.all(), pk=department_id)
-        # return HttpResponse(str(department))
         serializer = DoctorAppointmentSerializer(
             instance=saved_user, data=data, partial=True)
         if serializer.is_valid(raise_exception=True):

@@ -2,7 +2,7 @@ from .models import AppointmentSerial, DoctorAppointment
 from rest_framework import serializers
 from patient.serializers import PatientSerializer
 from doctor.serializers import DoctorSerializer
-import PIL
+
 
 class AppointmentSerialSerializer(serializers.HyperlinkedModelSerializer):
     doctor = DoctorSerializer(read_only=True)
@@ -52,13 +52,13 @@ class DoctorAppointmentSerializer(serializers.HyperlinkedModelSerializer):
     doctor = DoctorSerializer(read_only=True)
     doctor_id = serializers.IntegerField()
     doc_image = Base64ImageField(
-        max_length=None, use_url=True,
+        allow_null=True, max_length=None, use_url=True, required=False
     )
     doc_file = Base64ImageField(
-        max_length=None, use_url=True,
+        allow_null=True, max_length=None, use_url=True, required=False
     )
 
     class Meta:
         model = DoctorAppointment
-        fields = ['id', 'name', 'mobile', 'description', 'doctor', 'doctor_id', 'patient', 'patient_id', 'doc_image', 'doc_file',
-                  'created_at']
+        fields = ['id', 'name', 'mobile', 'description', 'doctor', 'doctor_id', 'patient', 'patient_id', 'doc_image',
+                  'doc_file', 'created_at']

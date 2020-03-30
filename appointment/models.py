@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from enum import Enum
 from patient.models import Patient
@@ -39,8 +40,8 @@ class AppointmentSerial(models.Model):
 class DoctorAppointment(models.Model):
     name = models.CharField(max_length=255, null=True)
     mobile = models.CharField(max_length=255, null=True)
-    doc_image = models.FileField()
-    doc_file = models.FileField()
+    doc_image = models.FileField(null=True)
+    doc_file = models.FileField(null=True)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -53,5 +54,6 @@ class DoctorAppointment(models.Model):
         null=True,
         on_delete=models.CASCADE
     )
+
     def __str__(self):
         return self.name
