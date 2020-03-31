@@ -13,14 +13,19 @@ class DoctorViewSet(viewsets.ModelViewSet):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filterset_fields = ['id', 'name', 'email', 'mobile', 'status']
+    filterset_fields = ['id', 'email', 'mobile', 'status']
     ordering_fields = ['id', 'name']
 
     def get_queryset(self):
         queryset = Doctor.objects.all()
         status = self.request.query_params.get('status')
+        name = self.request.query_params.get('name')
+
         if not status:
             queryset = queryset.exclude(status="DELETE")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+
         return queryset
 
     def retrieve(self, request, pk=None):

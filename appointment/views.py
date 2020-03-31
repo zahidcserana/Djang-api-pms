@@ -84,8 +84,8 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         # return HttpResponse(str(data))
         serializer = DoctorAppointmentSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
-            user_saved = serializer.save()
-            content = {"code": 20000, "data": {"status": "success"}}
+            model_saved = serializer.save()
+            content = {"code": 20000, "data": {"status": "success", "id": model_saved.id}}
         return Response(content)
 
     def retrieve(self, request, pk=None):
