@@ -1,6 +1,6 @@
 from .models import Patient
-from .serializers import PatientSerializer
-from rest_framework import viewsets, request, status, filters
+from .serializers import PatientSerializer, PatientListSerializer
+from rest_framework import viewsets, request, status, filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.response import Response
@@ -49,4 +49,18 @@ class PatientViewSet(viewsets.ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             Patient_saved = serializer.save()
             content = {"code": 20000, "data": {"status": "success"}}
+        return Response(content)
+
+
+class PatientSearchView(generics.ListAPIView):
+    queryset = Patient.objects.all()
+    serializer_class = PatientListSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'email', 'mobile']
+
+    def get(self, request):
+        queryset = self.get_queryset()
+        filter_backends = self.filter_queryset(queryset)
+        serializer = PatientListSerializer(filter_backends, many=True)
+        content = {"code": 20000, "data": serializer.data}
         return Response(content)
