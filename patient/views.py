@@ -13,7 +13,7 @@ class PatientViewSet(viewsets.ModelViewSet):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filterset_fields = ['id', 'email', 'mobile', 'status', 'type']
+    filterset_fields = ['id', 'email', 'mobile', 'status', 'type', 'gender']
     ordering_fields = ['id', 'name']
 
     def get_queryset(self):

@@ -5,7 +5,7 @@ from rest_framework.parsers import FileUploadParser
 from .models import AppointmentSerial, DoctorAppointment
 from patient.models import Patient
 from .serializers import AppointmentSerialSerializer, DoctorAppointmentSerializer
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.response import Response
@@ -69,14 +69,26 @@ class AppointmentSerialViewSet(viewsets.ModelViewSet):
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
     queryset = DoctorAppointment.objects.all()
     serializer_class = DoctorAppointmentSerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
-    filterset_fields = ['id', 'name', 'mobile', 'description', 'doctor_id', 'patient_id', 'created_at']
+    filterset_fields = ['id', 'name', 'mobile', 'description', 'doctor_id', 'patient_id']
     ordering_fields = ['id']
+
+    def get_queryset(self):
+        queryset = DoctorAppointment.objects.all()
+        reference_mobile = self.request.query_params.get('reference_mobile')
+        date_from = self.request.query_params.get('date_from')
+        date_to = self.request.query_params.get('date_to')
+
+        if reference_mobile:
+            queryset = queryset.filter(patient__mobile=reference_mobile)
+        if date_from and date_to:
+            queryset = queryset.filter(created_at__range=(date_from, date_to))
+        if date_from and not date_to:
+            queryset = queryset.filter(created_at__date=date_from)
+
+        return queryset
 
     def create(self, request):
         parser_classes = [FileUploadParser]
@@ -103,4 +115,18 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             user_saved = serializer.save()
             content = {"code": 20000, "data": {"status": "success"}}
+        return Response(content)
+
+
+class PatientAppointmentView(generics.ListAPIView):
+    queryset = DoctorAppointment.objects.all()
+    serializer_class = DoctorAppointmentSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['patient__id']
+
+    def get(self, request):
+        queryset = self.get_queryset()
+        filter_backends = self.filter_queryset(queryset)
+        serializer = DoctorAppointmentSerializer(filter_backends, many=True)
+        content = {"code": 20000, "data": serializer.data}
         return Response(content)

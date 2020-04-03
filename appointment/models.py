@@ -38,10 +38,23 @@ class AppointmentSerial(models.Model):
 
 
 class DoctorAppointment(models.Model):
+    MALE = 'MALE'
+    FEMALE = 'FEMALE'
+    Gender = [
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    ]
+    gender = models.CharField(
+        max_length=10,
+        choices=Gender,
+        default=MALE,
+    )
     name = models.CharField(max_length=255, null=True)
     mobile = models.CharField(max_length=255, null=True)
+    age = models.IntegerField(null=True)
     doc_image = models.FileField(null=True)
     doc_file = models.FileField(null=True)
+    problem = models.CharField(max_length=255, null=True)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
