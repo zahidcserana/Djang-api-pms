@@ -1,5 +1,5 @@
-from .models import Patient
-from .serializers import PatientSerializer, PatientListSerializer
+from .models import Patient, PatientPayment
+from .serializers import PatientSerializer, PatientListSerializer, PaymentSerializer
 from rest_framework import viewsets, request, status, filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -48,6 +48,55 @@ class PatientViewSet(viewsets.ModelViewSet):
             instance=saved_Patient, data=data, partial=True)
         if serializer.is_valid(raise_exception=True):
             Patient_saved = serializer.save()
+            content = {"code": 20000, "data": {"status": "success"}}
+        return Response(content)
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    queryset = PatientPayment.objects.all()
+    serializer_class = PaymentSerializer
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+    filterset_fields = ['id', 'patient__id']
+    ordering_fields = ['id']
+
+    def get_queryset(self):
+        queryset = PatientPayment.objects.all()
+        patient_id = self.request.query_params.get('patient_id')
+        date_from = self.request.query_params.get('date_from')
+        date_to = self.request.query_params.get('date_to')
+
+        if patient_id:
+            queryset = queryset.filter(patient__id=patient_id)
+
+        if date_from and date_to:
+            queryset = queryset.filter(created_at__range=(date_from, date_to))
+        if date_from and not date_to:
+            queryset = queryset.filter(created_at__date=date_from)
+
+        return queryset
+
+    def retrieve(self, request, pk=None):
+        queryset = PatientPayment.objects.all()
+        patient = get_object_or_404(queryset, pk=pk)
+        serializer = PaymentSerializer(patient)
+        content = {"code": 20000, "data": serializer.data}
+        return Response(content)
+
+    def create(self, request):
+        data = request.data
+        serializer = PaymentSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            content = {"code": 20000, "data": {"status": "success"}}
+        return Response(content)
+
+    def update(self, request, pk=None):
+        model_data = get_object_or_404(PatientPayment.objects.all(), pk=pk)
+        data = request.data
+        serializer = PaymentSerializer(
+            instance=model_data, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
             content = {"code": 20000, "data": {"status": "success"}}
         return Response(content)
 

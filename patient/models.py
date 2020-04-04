@@ -51,3 +51,17 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PatientPayment(models.Model):
+    description = models.CharField(max_length=255, null=True)
+    amount = models.FloatField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    patient = models.ForeignKey(
+        'patient.Patient',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.patient.name
