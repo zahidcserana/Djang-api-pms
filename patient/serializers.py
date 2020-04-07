@@ -21,3 +21,9 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PatientPayment
         fields = ['id', 'amount', 'description', 'patient', 'patient_id', 'created_at']
+
+
+class PaymentSearchSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = PatientPayment
+        fields = ['id', 'amount', 'description', 'created_at']

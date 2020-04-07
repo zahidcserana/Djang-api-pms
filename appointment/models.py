@@ -55,6 +55,7 @@ class DoctorAppointment(models.Model):
     doc_image = models.FileField(null=True)
     doc_file = models.FileField(null=True)
     problem = models.CharField(max_length=255, null=True)
+    advice = models.CharField(max_length=255, null=True)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

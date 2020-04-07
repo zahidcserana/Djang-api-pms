@@ -1,5 +1,5 @@
 from .models import Patient, PatientPayment
-from .serializers import PatientSerializer, PatientListSerializer, PaymentSerializer
+from .serializers import PatientSerializer, PatientListSerializer, PaymentSerializer, PaymentSearchSerializer
 from rest_framework import viewsets, request, status, filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -111,5 +111,18 @@ class PatientSearchView(generics.ListAPIView):
         queryset = self.get_queryset()
         filter_backends = self.filter_queryset(queryset)
         serializer = PatientListSerializer(filter_backends, many=True)
+        content = {"code": 20000, "data": serializer.data}
+        return Response(content)
+
+class PaymentSearchView(generics.ListAPIView):
+    queryset = PatientPayment.objects.all()
+    serializer_class = PaymentSearchSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['patient__id']
+
+    def get(self, request):
+        queryset = self.get_queryset()
+        filter_backends = self.filter_queryset(queryset)
+        serializer = PaymentSearchSerializer(filter_backends, many=True)
         content = {"code": 20000, "data": serializer.data}
         return Response(content)
