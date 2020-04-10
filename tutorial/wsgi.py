@@ -6,7 +6,7 @@ It exposes the WSGI callable as a module-level variable named ``application``.
 For more information on this file, see
 https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 """
-
+#
 # import os
 #
 # from django.core.wsgi import get_wsgi_application
@@ -15,18 +15,11 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 #
 # application = get_wsgi_application()
 
+
 import os
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kloudless.settings")
 from django.core.wsgi import get_wsgi_application
+from dj_static import Cling
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tutorial.settings")
-
-application = get_wsgi_application()
-
-
-#Add static serving using whitenoise
-from django.core.wsgi import get_wsgi_application
-from whitenoise.django import DjangoWhiteNoise
-
-application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
+application = Cling(get_wsgi_application())
