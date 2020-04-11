@@ -1,5 +1,6 @@
 from .models import Patient, PatientPayment
-from .serializers import PatientSerializer, PatientListSerializer, PaymentSerializer, PaymentSearchSerializer
+from .serializers import PatientSerializer, PatientListSerializer, PaymentSerializer, PaymentSearchSerializer, \
+    PatientAddSerializer
 from rest_framework import viewsets, request, status, filters, generics
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -35,7 +36,7 @@ class PatientViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         data = request.data
-        serializer = PatientSerializer(data=data)
+        serializer = PatientAddSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             Patient_saved = serializer.save()
             content = {"code": 20000, "data": {"status": "success"}}
