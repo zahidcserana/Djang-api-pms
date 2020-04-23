@@ -1,10 +1,15 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from django.db.models import Sum
+from rest_framework import viewsets, generics
+
+from appointment.models import AppointmentSerial, DoctorAppointment
+from patient.models import Patient, PatientPayment
 from tutorial.quickstart.serializers import UserSerializer, GroupSerializer
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -27,4 +32,22 @@ class HelloView(APIView):
 
     def get(self, request):
         content = {'message': 'Hello, World!'}
+        return Response(content)
+
+
+class summary(generics.ListAPIView):
+
+    def get(self, request):
+        summaryInfo = dict()
+        patient = Patient.objects.count()
+        serial = AppointmentSerial.objects.count()
+        appointment = DoctorAppointment.objects.count()
+        payment = list(PatientPayment.objects.aggregate(Sum('amount')).values())[0]
+
+        summaryInfo['patient'] = patient
+        summaryInfo['serial'] = serial
+        summaryInfo['appointment'] = appointment
+        summaryInfo['payment'] = payment
+        
+        content = {"code": 20000, "data": summaryInfo}
         return Response(content)

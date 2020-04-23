@@ -115,6 +115,7 @@ class PatientSearchView(generics.ListAPIView):
         content = {"code": 20000, "data": serializer.data}
         return Response(content)
 
+
 class PaymentSearchView(generics.ListAPIView):
     queryset = PatientPayment.objects.all()
     serializer_class = PaymentSearchSerializer
