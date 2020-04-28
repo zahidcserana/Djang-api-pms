@@ -16,4 +16,5 @@ urlpatterns = router.urls
 urlpatterns += [
     path('patient-search/', views.PatientSearchView.as_view()),
     path('payment-search/', views.PaymentSearchView.as_view()),
+    path('patient-summary/<int:pk>/', views.Summary.as_view()),
 ]

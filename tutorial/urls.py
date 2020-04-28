@@ -38,6 +38,6 @@ urlpatterns = [
     path('api/', include('appointment.urls')),
     path('api/', include('doctor.urls')),
     path('users/token/info/', UserInfo.as_view(), name='info'),
-    path('api/summary/', views.summary.as_view()),
+    path('api/summary/', views.Summary.as_view()),
 
 ]

@@ -1,3 +1,8 @@
+from django.db.models import Sum
+from rest_framework.utils import json
+
+from appointment.models import DoctorAppointment
+from appointment.serializers import DoctorAppointmentSerializer
 from .models import Patient, PatientPayment
 from .serializers import PatientSerializer, PatientListSerializer, PaymentSerializer, PaymentSearchSerializer, \
     PatientAddSerializer
@@ -31,6 +36,7 @@ class PatientViewSet(viewsets.ModelViewSet):
         queryset = Patient.objects.all()
         patient = get_object_or_404(queryset, pk=pk)
         serializer = PatientSerializer(patient)
+
         content = {"code": 20000, "data": serializer.data}
         return Response(content)
 
@@ -126,5 +132,24 @@ class PaymentSearchView(generics.ListAPIView):
         queryset = self.get_queryset()
         filter_backends = self.filter_queryset(queryset)
         serializer = PaymentSearchSerializer(filter_backends, many=True)
-        content = {"code": 20000, "data": serializer.data}
+        search = self.request.query_params.get('search')
+        payment = list(PatientPayment.objects.filter(patient_id=search).aggregate(Sum('amount')).values())[0]
+        content = {"code": 20000, "data": serializer.data, "payment": payment}
+        return Response(content)
+
+
+class Summary(generics.ListAPIView):
+
+    def get(self, request, pk=None):
+        summary = dict()
+        summary['payment'] = list(PatientPayment.objects.filter(patient_id=pk).aggregate(Sum('amount')).values())[0]
+        summary['appointment'] = DoctorAppointment.objects.filter(patient_id=pk).count()
+
+        d_appoint = DoctorAppointment.objects.filter(patient__id=pk).last()
+        d_appoint.created_at = d_appoint.created_at.strftime("%Y-%m-%d")
+
+        # appoint_data = DoctorAppointmentSerializer(d_appoint)
+
+        summary['last_appointment'] = d_appoint.created_at
+        content = {"code": 20000, "data": summary}
         return Response(content)

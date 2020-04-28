@@ -35,7 +35,7 @@ class HelloView(APIView):
         return Response(content)
 
 
-class summary(generics.ListAPIView):
+class Summary(generics.ListAPIView):
 
     def get(self, request):
         summaryInfo = dict()
