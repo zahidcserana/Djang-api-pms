@@ -17,7 +17,7 @@ class PatientAddSerializer(serializers.HyperlinkedModelSerializer):
 class PatientListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Patient
-        fields = ['id', 'name', 'mobile', 'age']
+        fields = ['id', 'name', 'mobile', 'age', 'gender']
 
 
 class PaymentSerializer(serializers.HyperlinkedModelSerializer):

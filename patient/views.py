@@ -146,10 +146,11 @@ class Summary(generics.ListAPIView):
         summary['appointment'] = DoctorAppointment.objects.filter(patient_id=pk).count()
 
         d_appoint = DoctorAppointment.objects.filter(patient__id=pk).last()
-        d_appoint.created_at = d_appoint.created_at.strftime("%Y-%m-%d")
+        if d_appoint:
+            d_appoint.created_at = d_appoint.created_at.strftime("%Y-%m-%d")
+            summary['last_appointment'] = d_appoint.created_at
 
         # appoint_data = DoctorAppointmentSerializer(d_appoint)
 
-        summary['last_appointment'] = d_appoint.created_at
         content = {"code": 20000, "data": summary}
         return Response(content)
