@@ -16,7 +16,7 @@ from django.http import HttpResponse
 
 
 class PatientViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
