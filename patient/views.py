@@ -16,6 +16,7 @@ from django.http import HttpResponse
 
 
 class PatientViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
@@ -36,6 +37,9 @@ class PatientViewSet(viewsets.ModelViewSet):
         queryset = Patient.objects.all()
         patient = get_object_or_404(queryset, pk=pk)
         serializer = PatientSerializer(patient)
+
+        current_user = request.user
+        return HttpResponse(str(current_user.company))
 
         content = {"code": 20000, "data": serializer.data}
         return Response(content)

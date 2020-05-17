@@ -17,8 +17,8 @@ urlpatterns = router.urls
 # router.register(r'users', views.UserViewSet)
 # router.register(r'groups', views.GroupViewSet)
 
-# urlpatterns = [
-#     # url(r'^users', UserViewSet),
-#     # path('users/hello/', HelloView.as_view(), name='hello'),
-#     # path('user/info/', UserInfo.as_view(), name='info'),
-# ]
+urlpatterns += [
+   	# url(r'^register/$', UserRegistration.as_view(), name='register'),
+    # path('users/hello/', HelloView.as_view(), name='hello'),
+    # path('user/info/', UserInfo.as_view(), name='info'),
+]

@@ -51,7 +51,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
@@ -90,28 +90,30 @@ WSGI_APPLICATION = 'tutorial.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     # 'default': {
-#     #     'ENGINE': 'django.db.backends.sqlite3',
-#     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     # }
-#     # 'default': {
-#     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#     #     'NAME': 'pms',
-#     #     'USER': 'pms',
-#     #     'PASSWORD': 'Admin@123',
-#     #     'HOST': 'localhost',
-#     #     'PORT': '',
-#     # }
-#     'default': dj_database_url.config(
-#         default=config('DATABASE_URL')
-#     )
-# }
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'pms',
+        'USER': 'zahid',
+        'PASSWORD': 'zahidcse',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+    # 'default': dj_database_url.config(
+    #     default=config('DATABASE_URL')
+    # )
+}
+# DATABASES = {}
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
+
+AUTH_PROFILE_MODULE = 'user.UserProfile'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
