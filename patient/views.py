@@ -38,8 +38,8 @@ class PatientViewSet(viewsets.ModelViewSet):
         patient = get_object_or_404(queryset, pk=pk)
         serializer = PatientSerializer(patient)
 
-        current_user = request.user
-        return HttpResponse(str(current_user.company))
+        # current_user = request.user
+        # return HttpResponse(str(current_user.company))
 
         content = {"code": 20000, "data": serializer.data}
         return Response(content)
